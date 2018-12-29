@@ -25,7 +25,7 @@ The main point is that using differentiable antithetics in learning VAEs improve
 
 We use many classic datasets for density estimation: MNIST, OMNIGLOT, FashionMNIST, Histopathology, Caltech101, and FreyFaces. Many of these are available in torchvision, but for the others, I've included a frozen version that should be downloaded [here](https://figshare.com/articles/antithetic-vae-datasets/7531013).
 
-Place the downloaded `datasets/` directory in the root of this repository.
+Place the downloaded `datasets/` directory in the root of this repository. Binary datasets are parameterized by a Bernoulli distribution over each pixel whereas grayscale datasets are parameterized by a logistic-256 distribution.
 
 ## Usage
 
