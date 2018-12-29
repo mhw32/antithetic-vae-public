@@ -4,8 +4,7 @@ from __future__ import absolute_import
 
 import os
 
-REPO_ROOT = os.path.join(os.path.dirname(__file__), '..')
-REPO_ROOT = os.path.realpath(REPO_ROOT)
+REPO_ROOT = os.path.realpath(os.path.dirname(__file__))
 
 DSET_DOMAIN = [
     'StaticMNIST',

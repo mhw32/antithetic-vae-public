@@ -14,8 +14,6 @@ import numpy as np
 import torch
 import torch.nn.functional as F
 
-from . import DSET_TO_DIST
-
 LOG2PI = np.log(2.0 * math.pi)
 
 

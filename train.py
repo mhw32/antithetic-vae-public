@@ -15,11 +15,11 @@ from torch import nn, optim
 from torch.nn import functional as F
 from torchvision import datasets, transforms
 
-from .datasets import build_dataset
-from .models import build_model
-from .elbo import build_objective
-from .utils import AverageMeter
-from . import DSET_DOMAIN, REPO_ROOT, DSET_TO_DIST, DIST_DOMAIN, DSET_TO_SIZE
+from datasets import build_dataset
+from models import build_model
+from elbo import build_objective
+from utils import AverageMeter
+from config import DSET_DOMAIN, REPO_ROOT, DSET_TO_DIST, DIST_DOMAIN, DSET_TO_SIZE
 
 
 if __name__ == "__main__":

@@ -8,11 +8,11 @@ import numpy as np
 import torch
 from torch.autograd import Variable
 
-from .utils import (
+from utils import (
     flatten_and_permute_latents,
     unflatten_and_unpermute_latents,
 )
-from .cheng import antithetic_hawkins_wixley
+from antithetic import antithetic_hawkins_wixley
 
 
 def marsaglia_antithetic_1d(z, x, mu, sigma, k):

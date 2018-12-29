@@ -6,8 +6,6 @@ from __future__ import absolute_import
 
 import os
 import cPickle
-import hashlib
-import errno
 from tqdm import tqdm
 from scipy.io import loadmat
 
@@ -17,7 +15,8 @@ from PIL import Image
 from os.path import join
 import torch.utils.data as data
 from torchvision import datasets, transforms
-from . import DSET_DOMAIN, REPO_ROOT
+
+from config import DSET_DOMAIN, REPO_ROOT
 
 
 def build_dataset(dataset_name, train=True):
@@ -34,7 +33,7 @@ def build_dataset(dataset_name, train=True):
         "dataset <%s> not recognized." % dataset_name
 
     # a few datasets need to dump things... use this folder
-    data_dir = os.path.join(REPO_ROOT, '../datasets')
+    data_dir = os.path.join(REPO_ROOT, 'datasets')
     data_dir = os.path.realpath(data_dir)
     data_dir = os.path.join(data_dir, dataset_name)
 
@@ -89,11 +88,11 @@ class StaticMNIST(data.Dataset):
                   train|val|test
     """
     train_data = np.load(os.path.realpath(
-        os.path.join(REPO_ROOT, '../datasets/static_mnist/binarized_mnist_train.npy')))
+        os.path.join(REPO_ROOT, 'datasets/static_mnist/binarized_mnist_train.npy')))
     val_data   = np.load(os.path.realpath(
-        os.path.join(REPO_ROOT, '../datasets/static_mnist/binarized_mnist_valid.npy')))
+        os.path.join(REPO_ROOT, 'datasets/static_mnist/binarized_mnist_valid.npy')))
     test_data  = np.load(os.path.realpath(
-        os.path.join(REPO_ROOT, '../datasets/static_mnist/binarized_mnist_test.npy')))
+        os.path.join(REPO_ROOT, 'datasets/static_mnist/binarized_mnist_test.npy')))
 
     def __init__(self, split='train'):
         super(StaticMNIST, self).__init__()
@@ -121,27 +120,27 @@ def prep_static_mnist():
         return np.array([[int(i) for i in line.split()] for line in lines])
 
     with open(os.path.realpath(
-        os.path.join(REPO_ROOT, '../datasets/static_mnist/binarized_mnist_train.amat'))) as fp:
+        os.path.join(REPO_ROOT, 'datasets/static_mnist/binarized_mnist_train.amat'))) as fp:
         lines = fp.readlines()
         data_train = lines_to_np_array(lines).astype('float32')
         np.save(os.path.realpath(
-            os.path.join(REPO_ROOT, '../datasets/static_mnist/binarized_mnist_train.npy')),
+            os.path.join(REPO_ROOT, 'datasets/static_mnist/binarized_mnist_train.npy')),
             data_train)
 
     with open(os.path.realpath(
-        os.path.join(REPO_ROOT, '../datasets/static_mnist/binarized_mnist_valid.amat'))) as fp:
+        os.path.join(REPO_ROOT, 'datasets/static_mnist/binarized_mnist_valid.amat'))) as fp:
         lines = fp.readlines()
         data_valid = lines_to_np_array(lines).astype('float32')
         np.save(os.path.realpath(
-            os.path.join(REPO_ROOT, '../datasets/static_mnist/binarized_mnist_valid.npy')),
+            os.path.join(REPO_ROOT, 'datasets/static_mnist/binarized_mnist_valid.npy')),
             data_valid)
 
     with open(os.path.realpath(
-        os.path.join(REPO_ROOT, '../datasets/static_mnist/binarized_mnist_test.amat'))) as fp:
+        os.path.join(REPO_ROOT, 'datasets/static_mnist/binarized_mnist_test.amat'))) as fp:
         lines = fp.readlines()
         data_test = lines_to_np_array(lines).astype('float32')
         np.save(os.path.realpath(
-            os.path.join(REPO_ROOT, '../datasets/static_mnist/binarized_mnist_test.npy')),
+            os.path.join(REPO_ROOT, 'datasets/static_mnist/binarized_mnist_test.npy')),
             data_test)
 
 
@@ -152,7 +151,7 @@ class Omniglot(data.Dataset):
                   use training split
     """
     mat_path = os.path.realpath(
-        os.path.join(REPO_ROOT, '../datasets/omniglot/chardata.mat'))
+        os.path.join(REPO_ROOT, 'datasets/omniglot/chardata.mat'))
 
     def __init__(self, train=True, transform=None):
         super(Omniglot, self).__init__()
@@ -190,7 +189,7 @@ class Caltech101(data.Dataset):
     mat_path = os.path.realpath(
         os.path.join(
             REPO_ROOT,
-            '../datasets/caltech101/caltech101_silhouettes_28_split1.mat'))
+            'datasets/caltech101/caltech101_silhouettes_28_split1.mat'))
 
     def __init__(self, train=True, transform=None):
         super(Caltech101, self).__init__()
@@ -229,7 +228,7 @@ class FreyFaces(data.Dataset):
                   use training split
     """
     pickle_path = os.path.realpath(
-        os.path.join(REPO_ROOT, '../datasets/freyfaces/freyfaces.pkl'))
+        os.path.join(REPO_ROOT, 'datasets/freyfaces/freyfaces.pkl'))
 
     def __init__(self, train=True, transform=None):
         super(FreyFaces, self).__init__()
@@ -271,7 +270,7 @@ class Histopathology(data.Dataset):
                   training|validation|test
     """
     pickle_path = os.path.realpath(
-        os.path.join(REPO_ROOT, '../datasets/histopathology/histopathology.pkl'))
+        os.path.join(REPO_ROOT, 'datasets/histopathology/histopathology.pkl'))
 
     def __init__(self, split='training'):
         super(Histopathology, self).__init__()

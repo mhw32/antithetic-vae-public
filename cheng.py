@@ -10,12 +10,12 @@ import math
 import numpy as np
 
 import torch
-from torch.autograd import Variable
 
-from .utils import (
+from utils import (
     flatten_and_permute_latents,
     unflatten_and_unpermute_latents,
 )
+from antithetic import antithetic_hawkins_wixley
 
 
 def cheng_sample_1d(z, b, mu, sigma, eta, delta, k):
@@ -203,21 +203,6 @@ def cheng_antithetic_nd(z, b, x, mu, sigma, k):
     y_anti = unflatten_and_unpermute_latents(y2d_anti, batch_size)
 
     return x_anti, y_anti
-
-
-def antithetic_wilson_hilferty(X1, dof):
-    # Wilson, Edwin B., and Margaret M. Hilferty. "The distribution
-    # of chi-square." Proceedings of the National Academy of
-    # Sciences 17.12 (1931): 684-688.
-    return dof * torch.pow(2. * (1. - (2. / (9. * dof))) - \
-                           torch.pow(X1 / float(dof) + 1e-15, 1./3), 3)
-
-
-def antithetic_hawkins_wixley(X1, dof):
-    # Hawkins, D.M., Wixley, R.A.J., 1986. A note on the transformation
-    # of chi-squared variables to normality. Amer. Statist. 40, 296-298.
-    return dof * torch.pow(2 * (1. - (3./(16.*dof)) - (7./(512.*dof**2)) + (231./(8192.*dof**3))) - \
-                           torch.pow(X1 / float(dof) + 1e-15, 1./4), 4)
 
 
 def unsqueeze_and_repeat(x, n, dim=1):

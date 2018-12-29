@@ -7,7 +7,7 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
-from .elbo import (
+from elbo import (
     pick_objective,
     log_bernoulli_marginal_estimate,
     log_bernoulli_norm_flow_marginal_estimate,
@@ -16,9 +16,9 @@ from .elbo import (
     log_logistic_norm_flow_marginal_estimate,
     log_logistic_volume_flow_marginal_estimate,
 )
-from .utils import unit_gaussian_to_gaussian
-from .utils import sample_from_unit_gaussian, unit_gaussian_params
-from .flows import NormalizingFlows, VolumePreservingFlows
+from utils import unit_gaussian_to_gaussian
+from utils import sample_from_unit_gaussian, unit_gaussian_params
+from flows import NormalizingFlows, VolumePreservingFlows
 
 
 def build_model(name, input_dim, z_dim, n_samples, hidden_dim=300,

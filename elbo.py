@@ -8,7 +8,7 @@ from __future__ import print_function
 from __future__ import absolute_import
 
 import torch
-from .utils import (
+from utils import (
     bernoulli_log_pdf,
     gaussian_log_pdf,
     unit_gaussian_log_pdf,
