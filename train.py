@@ -83,9 +83,10 @@ if __name__ == "__main__":
         batch_size=args.batch_size, shuffle=True)
 
     model = build_model(
-        DSET_TO_SIZE[args.dataset], args.z_dim, args.n_samples, hidden_dim=args.hidden_dim,
-        n_norm_flows=args.n_norm_flows, n_volume_flows=args.n_volume_flows,
-        data_dist=DSET_TO_DIST[args.dataset], backprop=args.backprop)
+        args.model, DSET_TO_SIZE[args.dataset], args.z_dim, args.n_samples, 
+        hidden_dim=args.hidden_dim, n_norm_flows=args.n_norm_flows, 
+        n_volume_flows=args.n_volume_flows, data_dist=DSET_TO_DIST[args.dataset], 
+        backprop=args.backprop)
     model = model.to(device)
 
     optimizer = optim.Adam(model.parameters(), lr=args.lr)
@@ -125,10 +126,6 @@ if __name__ == "__main__":
             else:
                 recon_x_mu, recon_x_logvar, z, z_mu, z_logvar = model(data)
                 loss = elbo_loss_fn(recon_x_mu, recon_x_logvar, data, z, z_mu, z_logvar)
-
-            if args.track_stats:
-                ziid = model._reparameterize(z_mu, z_logvar)
-                return loss, ziid, z, z_mu, z_logvar
 
         return loss
 

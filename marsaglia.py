@@ -67,10 +67,10 @@ def marsaglia_sample_1d(z, mu, sigma, eta, delta, k):
     r = delta * math.sqrt(k - 1)
 
     s = torch.sum(torch.pow(z, 2), dim=1)
-    i = Variable(torch.arange(1, k).unsqueeze(0).repeat(bsize, 1))
-    if mu.is_cuda:
-        i = i.cuda()
+    i = torch.arange(1, k).unsqueeze(0).repeat(bsize, 1).float()
+    i = i.to(z.device)
     z = z * torch.pow((k - i) * (k - i + 1) * s.unsqueeze(1), -0.5)
+
     # slow form below: vectorized form above!
     # for _i in xrange(k - 1):
     #     i = _i + 1

@@ -46,15 +46,16 @@ class AverageMeter(object):
         self.avg = self.sum / self.count
 
 
-def unit_gaussian_to_gaussian(mu, logvar):
+def unit_gaussian_to_gaussian(mu, logvar, eps=None):
     # gaussian reparameterization trick
     std = torch.exp(0.5*logvar)
-    eps = torch.randn_like(std)
+    if eps is None:
+        eps = torch.randn_like(std)
     return eps.mul(std).add_(mu)
 
 
-def sample_from_unit_gaussian(device, batch_size, n_samples, z_dim):
-    z = torch.Tensor(batch_size, n_samples, z_dim).normal_()
+def sample_from_unit_gaussian(batch_size, n_samples, z_dim, device):
+    z = torch.randn(batch_size, n_samples, z_dim)
     z = z.to(device)
     return z
 

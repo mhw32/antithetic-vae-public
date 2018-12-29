@@ -5,10 +5,10 @@ from __future__ import absolute_import
 import math
 import torch
 import torch.nn as nn
+from torch.nn import init
 import torch.nn.functional as F
 
 from elbo import (
-    pick_objective,
     log_bernoulli_marginal_estimate,
     log_bernoulli_norm_flow_marginal_estimate,
     log_bernoulli_volume_flow_marginal_estimate,
@@ -19,6 +19,8 @@ from elbo import (
 from utils import unit_gaussian_to_gaussian
 from utils import sample_from_unit_gaussian, unit_gaussian_params
 from flows import NormalizingFlows, VolumePreservingFlows
+from cheng import cheng_antithetic_nd 
+from marsaglia import marsaglia_antithetic_nd 
 
 
 def build_model(name, input_dim, z_dim, n_samples, hidden_dim=300,
@@ -105,7 +107,7 @@ class VAE(nn.Module):
         # i heard xavier init is good
         for m in self.modules():
             if isinstance(m, nn.Linear):
-                init.xavier_normal(m.weight.data)
+                init.xavier_normal_(m.weight.data)
                 if m.bias is not None:
                     m.bias.data.zero_()
 
@@ -191,7 +193,7 @@ class VAE(nn.Module):
                     recon_x_mu_i = self.decoder(zk_i)
                     recon_x_mu.append(recon_x_mu_i)
                 else:  # logistic
-                    recon_x_mu_ i, recon_x_logvar_i = self.decoder(zk_i)
+                    recon_x_mu_i, recon_x_logvar_i = self.decoder(zk_i)
                     recon_x_mu.append(recon_x_mu_i)
                     recon_x_logvar.append(recon_x_logvar_i)
                 zk.append(zk_i)
@@ -296,7 +298,7 @@ class ChengVAE(VAE):
 
         z = torch.normal(torch.zeros(batch_size, k - 1, self.z_dim),
                          torch.ones(batch_size, k - 1, self.z_dim))
-        b = torch.bernoulli(torch.ones(batch_size, k - 1, self.z_dim) * 0.5))
+        b = torch.bernoulli(torch.ones(batch_size, k - 1, self.z_dim) * 0.5)
         z, b = z.to(device), b.to(device)
 
         if self.backprop:
